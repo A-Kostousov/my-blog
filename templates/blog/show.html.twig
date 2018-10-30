@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Страница поста{% endblock %}
+
+{% block body %}
+    <h2>{{ post.postTitle }}</h2>
+    <p>{{ post.postText }}</p>
+    <hr>
+    <p>{{ post.createdAt | date (" D M Y H: i: s ") }}</p>
+
+    <a href="{{ path('update', {'id': post.id}) }}" class="btn btn-primary">Изменить</a>
+    <a href="{{ path('delete', {'id': post.id}) }}" class="btn btn-primary">Удалить</a>
+
+{% endblock %}

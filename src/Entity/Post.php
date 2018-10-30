@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
@@ -22,18 +23,25 @@ class Post
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
      */
-    private $title;
+    private $postTitle;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\NotBlank()
+     * @Assert\Length(min="10", max="9000")
      */
-    private $text;
+    private $postText;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -48,27 +56,36 @@ class Post
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getPostTitle(): ?string
     {
-        return $this->title;
+        return $this->postTitle;
     }
 
-    public function setTitle(string $title): self
+    public function setPostTitle(string $title): self
     {
-        $this->title = $title;
+        $this->postTitle = $title;
 
         return $this;
     }
 
-    public function getText(): ?string
+    public function getPostText(): ?string
     {
-        return $this->text;
+        return $this->postText;
     }
 
-    public function setText(string $text): self
+    public function setPostText(?string $text): self
     {
-        $this->text = $text;
+        $this->postText = $text;
 
         return $this;
+    }
+
+    public function getShortPostText(): ?string {
+        if (mb_strlen($this->postText) <= 80) {
+            return $this->postText;
+        }
+        $short = mb_substr($this->postText, 0, 80);
+
+        return $short;
     }
 }
