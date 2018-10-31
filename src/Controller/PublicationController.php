@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
 use App\Entity\Post;
+use App\Form\CommentsType;
 use App\Form\PostType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,9 +39,25 @@ class PublicationController extends AbstractController
     /**
      * @Route("/show/{id}", name="show")
      */
-    public function show (Post $post)
+    public function show (Post $post, Request $request, EntityManagerInterface $entityManager)
     {
-       return $this->render('blog/show.html.twig', ['post' => $post]);
+        $comments = new Comments();
+        $form = $this->createForm(CommentsType::class, $comments);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $entityManager->persist($post);
+            $entityManager->flush();
+            $this->addFlash('success', 'Ваш комментарий успешно добавлен');
+
+            return $this->redirectToRoute('show', ['id' => $post->getId()]);
+        }
+
+       return $this->render('blog/show.html.twig', [
+           'post' => $post,
+           'form' => $form->createView()
+       ]);
     }
 
     /**
@@ -47,7 +65,9 @@ class PublicationController extends AbstractController
      */
     public function update_post($id, Request $request)
     {
-        $post = $this->getDoctrine()->getRepository(Post::class)->find($id);
+        $post = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->find($id);
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
@@ -77,5 +97,7 @@ class PublicationController extends AbstractController
         $em->flush();
         return $this->redirectToRoute("homepage");
     }
+
+
 
 }

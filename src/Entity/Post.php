@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -34,6 +36,11 @@ class Post
      */
     private $postText;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="content", orphanRemoval=true)
+     */
+    private $CommentsPost;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -42,6 +49,7 @@ class Post
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->CommentsPost = new ArrayCollection();
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -69,6 +77,7 @@ class Post
     }
 
     public function getPostText(): ?string
+
     {
         return $this->postText;
     }
@@ -88,4 +97,37 @@ class Post
 
         return $short;
     }
+
+    /**
+     * @return Collection|Comments[]
+     */
+    public function getCommentsPost(): Collection
+    {
+        return $this->CommentsPost;
+    }
+
+    public function addCommentsPost(Comments $commentsPost): self
+    {
+        if (!$this->CommentsPost->contains($commentsPost)) {
+            $this->CommentsPost[] = $commentsPost;
+            $commentsPost->setContent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentsPost(Comments $commentsPost): self
+    {
+        if ($this->CommentsPost->contains($commentsPost)) {
+            $this->CommentsPost->removeElement($commentsPost);
+            // set the owning side to null (unless already changed)
+            if ($commentsPost->getContent() === $this) {
+                $commentsPost->setContent(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }
