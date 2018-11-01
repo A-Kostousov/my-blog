@@ -111,18 +111,19 @@ class Post
         if (!$this->CommentsPost->contains($commentsPost)) {
             $this->CommentsPost[] = $commentsPost;
             $commentsPost->setContent($this);
+            // $this->quantityComments();
         }
 
         return $this;
     }
 
-    public function removeCommentsPost(Comments $commentsPost): self
+    public function removeCommentsPost(Comments $commentPost): self
     {
-        if ($this->CommentsPost->contains($commentsPost)) {
-            $this->CommentsPost->removeElement($commentsPost);
+        if ($this->CommentsPost->contains($commentPost)) {
+            $this->CommentsPost->removeElement($commentPost);
             // set the owning side to null (unless already changed)
-            if ($commentsPost->getContent() === $this) {
-                $commentsPost->setContent(null);
+            if ($commentPost->getContent() === $this) {
+                $commentPost->setContent(null);
             }
         }
 

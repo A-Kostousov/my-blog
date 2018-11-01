@@ -12,8 +12,8 @@ class CommentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
             ->add('author',null, ['label' => 'label.author'])
+            ->add('text',null, ['label' => 'label.text'])
         ;
     }
     public function configureOptions(OptionsResolver $resolver)

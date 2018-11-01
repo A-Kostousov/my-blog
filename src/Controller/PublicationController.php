@@ -42,16 +42,18 @@ class PublicationController extends AbstractController
     public function show (Post $post, Request $request, EntityManagerInterface $entityManager)
     {
         $comments = new Comments();
+        $comments->setContent($post);
         $form = $this->createForm(CommentsType::class, $comments);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $entityManager->persist($post);
+            $entityManager->persist($comments);
             $entityManager->flush();
             $this->addFlash('success', 'Ваш комментарий успешно добавлен');
 
-            return $this->redirectToRoute('show', ['id' => $post->getId()]);
+            return $this->redirectToRoute('show', [
+                'id' => $post->getId()]);
         }
 
        return $this->render('blog/show.html.twig', [
@@ -59,6 +61,16 @@ class PublicationController extends AbstractController
            'form' => $form->createView()
        ]);
     }
+
+   /* public function quantityComments($id)
+    {
+        $post = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->find($id);
+
+        return $this->redirectToRoute("show");
+    }
+   */
 
     /**
      * @Route("/update/{id}", name="update")
@@ -76,7 +88,8 @@ class PublicationController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            return $this->redirectToRoute("show", ['id' => $post->getId()]);
+            return $this->redirectToRoute("show", [
+                'id' => $post->getId()]);
         }
 
         return $this->render('blog/update.html.twig',[

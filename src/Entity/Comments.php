@@ -32,6 +32,11 @@ class Comments
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="string", length=9000)
+     */
+    private $text;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,5 +76,22 @@ class Comments
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    public function setText(string $text): self
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
     }
 }

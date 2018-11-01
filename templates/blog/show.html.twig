@@ -1,23 +1,29 @@
 {% extends 'base.html.twig' %}
-
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 {% block title %}Страница поста{% endblock %}
 
 {% block body %}
     <h2>{{ post.postTitle }}</h2>
     <p>{{ post.postText }}</p>
-    <hr>
-    <p>{{ post.createdAt | date (" D M Y H: i: s ") }}</p>
-
+    <p>Дата создания:{{ post.createdAt | date (" D M Y H: i: s ") }}</p>
     <a href="{{ path('update', {'id': post.id}) }}" class="btn btn-primary">Изменить</a>
     <a href="{{ path('delete', {'id': post.id}) }}" class="btn btn-primary">Удалить</a>
-
+    <hr>
+    {% for comments in post.commentsPost %}
+        <p>{{ comments.author }}</p>
+        <p>{{ comments.text }}</p>
+        <p>Дата создания: {{ comments.createdAt | date (" D M Y H: i: s ") }}</p>
+        <hr>
+    {% endfor %}
     <div class="container">
         <div class="example-wrapper">
             <div class="form-group">
                 {{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
 
 
-                {{ form_row(form.author,{ 'class':'summernote' }) }}
+                {{ form_row(form.author,{ 'class':'form-control' }) }}
+
+                {{ form_row(form.text,{ 'class':'summernote' }) }}
                 <br>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Добавить комментарий</button>

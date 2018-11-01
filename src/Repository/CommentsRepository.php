@@ -20,7 +20,7 @@ class CommentsRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Comments[] Returns an array of Comments objects
+//     * @return CommentsText[] Returns an array of CommentsText objects
 //     */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class CommentsRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Comments
+    public function findOneBySomeField($value): ?CommentsText
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

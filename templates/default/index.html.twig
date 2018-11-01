@@ -18,15 +18,17 @@
                 <h3>{{ post.postTitle }}</h3>
                 <p>{{ post.postText|raw }}</p>
                 <p>{{ post.createdAt | date (" D M Y H: i: s ") }}</p>
+                <hr>
+
                 <a href="{{ path('show', {'id': post.id}) }}" class="btn btn-primary">Читать дальше</a>
 
             </div>
         </div>
         <!-- /.row -->
         <hr>
-
-
-
     {% endfor %}
+
+
+
 
 {% endblock %}
