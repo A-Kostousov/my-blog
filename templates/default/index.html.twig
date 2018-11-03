@@ -4,10 +4,6 @@
 
 {% block body %}
     {% for post in posts %}
-    <!-- Page Content -->
-
-
-        <!-- Project One -->
         <div class="row">
             <div class="col-md-7">
                 <a href="#">
@@ -19,16 +15,11 @@
                 <p>{{ post.postText|raw }}</p>
                 <p>{{ post.createdAt | date (" D M Y H: i: s ") }}</p>
                 <hr>
-
                 <a href="{{ path('show', {'id': post.id}) }}" class="btn btn-primary">Читать дальше</a>
-
+                <hr>
+                <p>{{ post.commentsPost|length }}</p>
             </div>
         </div>
-        <!-- /.row -->
         <hr>
     {% endfor %}
-
-
-
-
 {% endblock %}

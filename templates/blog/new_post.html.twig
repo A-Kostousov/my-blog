@@ -7,10 +7,9 @@
     <div class="container">
         <div class="example-wrapper">
             <div class="form-group">
+
                 {{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
-
                 {{ form_row(form.postTitle,{ 'class':'form-control' }) }}
-
                 {{ form_row(form.postText,{ 'class':'summernote' }) }}
                 <br>
                 <div class="form-group">
@@ -20,7 +19,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
-
-

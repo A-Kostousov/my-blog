@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Comments
 {
     /**
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -17,9 +18,8 @@ class Comments
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="CommentsPost")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="CommentsPost")
+    */
     private $content;
 
     /**
@@ -36,6 +36,13 @@ class Comments
      * @ORM\Column(type="string", length=9000)
      */
     private $text;
+
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+
+    }
 
     public function getId(): ?int
     {
@@ -88,10 +95,5 @@ class Comments
         $this->text = $text;
 
         return $this;
-    }
-
-    public function __construct()
-    {
-        $this->createdAt = new \DateTime();
     }
 }

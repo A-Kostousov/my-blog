@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Андрей
- * Date: 29.10.2018
- * Time: 1:07
- */
+
 
 namespace App\Service;
 
-
+use App\Entity\Comments;
 use App\Entity\Post;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,16 +21,19 @@ class Posts
      */
     private $repo;
 
+    private $commentRepo;
+
 
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
         $this->repo = $this->em->getRepository(Post::class);
-
+        $this->commentRepo = $this->em->getRepository(Comments::class);
     }
 
     /**
      * @return Post[]
+     * @return Comments []
      */
     public function getAll()
     {
@@ -44,10 +42,10 @@ class Posts
 
     /**
      * @return Post
+     * @return Comments
      */
     public function getById($id): ?Post
     {
         return$this->repo->find($id);
     }
-
 }

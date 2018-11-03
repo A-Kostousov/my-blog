@@ -37,6 +37,7 @@ class Post
     private $postText;
 
     /**
+     * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="App\Entity\Comments", mappedBy="content", orphanRemoval=true)
      */
     private $CommentsPost;
@@ -111,7 +112,6 @@ class Post
         if (!$this->CommentsPost->contains($commentsPost)) {
             $this->CommentsPost[] = $commentsPost;
             $commentsPost->setContent($this);
-            // $this->quantityComments();
         }
 
         return $this;
@@ -129,6 +129,4 @@ class Post
 
         return $this;
     }
-
-
 }

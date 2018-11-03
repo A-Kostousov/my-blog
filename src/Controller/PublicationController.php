@@ -1,18 +1,17 @@
 <?php
-
 namespace App\Controller;
-
 use App\Entity\Comments;
 use App\Entity\Post;
 use App\Form\CommentsType;
 use App\Form\PostType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;;
+
 class PublicationController extends AbstractController
 {
-
     /**
      * @Route("/add-publication", name="add-publication")
      */
@@ -21,19 +20,16 @@ class PublicationController extends AbstractController
         $post = new Post ();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid())
         {
             $entityManager->persist($post);
             $entityManager->flush();
             $this->addFlash('success', 'Добавить публикацию');
-
             return $this->redirectToRoute('show', ['id' => $post->getId()]);
         }
-
         return $this->render('blog/new_post.html.twig',[
-    			'form' => $form->createView()
-    		]);
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -45,32 +41,19 @@ class PublicationController extends AbstractController
         $comments->setContent($post);
         $form = $this->createForm(CommentsType::class, $comments);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid())
         {
             $entityManager->persist($comments);
             $entityManager->flush();
             $this->addFlash('success', 'Ваш комментарий успешно добавлен');
-
             return $this->redirectToRoute('show', [
                 'id' => $post->getId()]);
         }
-
-       return $this->render('blog/show.html.twig', [
-           'post' => $post,
-           'form' => $form->createView()
-       ]);
+        return $this->render('blog/show.html.twig', [
+            'post' => $post,
+            'form' => $form->createView()
+        ]);
     }
-
-   /* public function quantityComments($id)
-    {
-        $post = $this->getDoctrine()
-            ->getRepository(Post::class)
-            ->find($id);
-
-        return $this->redirectToRoute("show");
-    }
-   */
 
     /**
      * @Route("/update/{id}", name="update")
@@ -82,21 +65,17 @@ class PublicationController extends AbstractController
             ->find($id);
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid())
         {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-
             return $this->redirectToRoute("show", [
                 'id' => $post->getId()]);
         }
-
         return $this->render('blog/update.html.twig',[
             'form' => $form->createView()
         ]);
     }
-
     /**
      * @Route("/delete/{id}", name="delete")
      */
@@ -110,7 +89,4 @@ class PublicationController extends AbstractController
         $em->flush();
         return $this->redirectToRoute("homepage");
     }
-
-
-
 }
